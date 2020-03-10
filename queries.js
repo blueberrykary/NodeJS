@@ -7,7 +7,7 @@ const pool = new Pool({
   port: 5432,
 })
 const getUsers = (request, response) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM user_type ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -18,7 +18,7 @@ const getUsers = (request, response) => {
 const getUserById = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM user_type WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
@@ -27,9 +27,9 @@ const getUserById = (request, response) => {
 }
 
 const createUser = (request, response) => {
-  const {name, email} = request.body
+  const {type, description} = request.body
 
-  pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+  pool.query('INSERT INTO user_type (type, description) VALUES ($1, $2)', [type, description], (error, results) => {
     if (error) {
       throw error
     }
@@ -39,11 +39,11 @@ const createUser = (request, response) => {
 
 const updateUser = (request, response) => {
   const id = parseInt(request.params.id)
-  const { name, email } = request.body
+  const { type, description } = request.body
 
   pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email, id],
+    'UPDATE user_type SET type = $1, description =$2 WHERE id = $3',
+    [type, description, id],
     (error, results) => {
       if (error) {
         throw error
@@ -56,7 +56,7 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const id = parseInt(request.params.id)
 
-  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('DELETE FROM user_type WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error
     }
